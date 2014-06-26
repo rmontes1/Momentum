@@ -19,5 +19,20 @@ public class PlayerCharacter : Character {
 		Move (moveSpeed);
 	}
 
+	protected override void Move( float movingSpeed ){
+		isGrounded = Physics2D.OverlapCircle (groundCheck.position, groundRadius, whatIsGround);
+		playerAnimator.SetBool ("Ground", isGrounded);
+		
+		
+		float move = Input.GetAxis ("Horizontal");
+		rigidbody2D.velocity = new Vector2 (move * movingSpeed, rigidbody2D.velocity.y);
+		
+		playerAnimator.SetFloat ("Speed", Mathf.Abs (move));
+		
+		if (move > 0 && !facingRight) 
+			FlipPlayer();
+		else if( move < 0 && facingRight )
+			FlipPlayer();
+	}
 
 }
