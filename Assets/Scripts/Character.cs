@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using InControl;
 
 
 [RequireComponent (typeof (Animator))]
@@ -32,7 +33,6 @@ public class Character : MonoBehaviour {
 	protected bool canBlock;
 
 
-
 	// Use this for initialization
 	void Start () {
 
@@ -43,16 +43,27 @@ public class Character : MonoBehaviour {
 	
 	}
 
+	//Applies Jump based on either key or gamepad usage
 	public void Jump( float jumpForceAmount ){
-		if( isGrounded && Input.GetKeyDown(KeyCode.Space)){
-			playerAnimator.SetBool("Ground", false);
-			rigidbody2D.AddForce( new Vector2( 0, jumpForceAmount ));
+		//doesnt register the button all the time since its in FixedUpdate
+		//But need it in here because it uses physics 
+		if( GameManager.controllerManager.usingGamePad ){
+			if( isGrounded && GameManager.controllerManager.activeController.Action1.WasPressed ){
+				playerAnimator.SetBool("Ground", false);
+				rigidbody2D.AddForce( new Vector2( 0, jumpForceAmount ));
+			}
+		}else{
+			if( isGrounded && Input.GetButtonDown("Jump")){
+				playerAnimator.SetBool("Ground", false);
+				rigidbody2D.AddForce( new Vector2( 0, jumpForceAmount ));
+			}
 		}
 	}
 
 	//might want to make virtual or override to allow the 2 kinds of moves to be implemented
 	//player and npc / AI
 	protected virtual void Move(float movingSpeed){
+	
 	}
 
 	public void Interact(){

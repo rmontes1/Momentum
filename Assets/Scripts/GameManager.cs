@@ -6,14 +6,14 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
 
 	public static GameManager gameManager;
-	public ControllerManager controllerManager;
+	public static ControllerManager controllerManager;
 
 	void Awake(){
 		if( gameManager == null ){
 
 			DontDestroyOnLoad(gameObject);
-			gameManager = this;
 			Init();
+			gameManager = this;
 		}
 		else if(gameManager != this ){
 			Destroy(gameObject);
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+
 	}
 	
 	// Update is called once per frame
